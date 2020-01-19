@@ -1,7 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.master')
 @section('content')
+<div style="margin-top:20px;"></div>
   <div class="row">
-    <div class="col-md-6 col-md-offset-3">
+    <div class="col-md-6">
       {{ Form::open(['route'=>'contacts.store', 'method'=>'POST']) }}
         @include('contacts.form_master')
       {{ form::close() }}

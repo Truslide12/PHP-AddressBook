@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Address;
+use App\Contact;
 
 class AddressController extends Controller
 {
@@ -22,9 +24,10 @@ class AddressController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Contact $contact)
     {
-        return view('addresses.create');
+
+        return view('addresses.create')->with('contact', $contact);
     }
 
     /**
@@ -35,15 +38,19 @@ class AddressController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'firstName'=>'required|string|max:255',
-            'laststName'=>'required|string|max:255',
-            'email'=>'required|string|max:255',
-            'phone'=>'string|max:255',
-            'birthday'=>'string|max:255',
-          ]);
-          Addresses::create($request->all());
-          return redirect()->route('addresses.index')->with('success','Address created success');
+        $request->validate([
+            'number'    =>'integer',
+            'street'    =>'required|string|max:255',
+            'city'      =>'required|string|max:255',
+            'state'     =>'string|max:255',
+            'zip'       =>'integer',
+            'type'      =>'string|max:255',
+            'contact_id'=>'required|integer'
+            ]); 
+        Address::create($request->all());
+        
+        $contact = Contact::find($request->contact_id);
+        return view('contacts.details',compact('contact'));
     }
 
     /**
@@ -52,9 +59,10 @@ class AddressController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($address)
     {
-        //
+        return view('address.details')
+        ->with('address', $address);
     }
 
     /**
@@ -65,7 +73,7 @@ class AddressController extends Controller
      */
     public function edit($id)
     {
-        $contact = Addresses::find($id);
+        $address = Address::find($id);
         return view('addresses.edit',compact('address'));
     }
 
@@ -78,15 +86,16 @@ class AddressController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request,[
-            'firstName'=>'required|string|max:255',
-            'laststName'=>'required|string|max:255',
-            'email'=>'required|string|max:255',
-            'phone'=>'string|max:255',
-            'birthday'=>'string|max:255',
-          ]);
-          Addresses::find($id)->update($request->all());
-          return redirect()->route('addresses.index')->with('success','Address update success');
+        $request->validate([
+            'number'    =>'integer',
+            'street'    =>'required|string|max:255',
+            'city'      =>'required|string|max:255',
+            'state'     =>'string|max:255',
+            'zip'       =>'integer',
+            'type'      =>'string|max:255',
+        ]);
+          Address::find($id)->update($request->all());
+          return redirect()->route('contacts.index')->with('success','Address update success');
     }
 
     /**
@@ -97,7 +106,7 @@ class AddressController extends Controller
      */
     public function destroy($id)
     {
-        Addresses::find($id)->delete();
-        return redirect()->route('addresses.index')->with('success','Address deleted success'); 
+        Address::find($id)->delete();
+        return redirect()->route('contacts.index')->with('success','Address deleted success'); 
     }
 }

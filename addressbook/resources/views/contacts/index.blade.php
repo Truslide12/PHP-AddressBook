@@ -4,16 +4,16 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-10" style="margin-top:10px;">
                 <h3>Contacts</h3>
             </div>
-            <div class="col-sm-12">
+            <div class="col-sm-12" style="margin-top:10px;">
                 <a class="btn btn-sm btn-success" href="{{ route('contacts.create') }}">Create New Contact</a>
             </div>
         </div>
 
         <div class="table-responsive">
-        <table class="table table-hover table-sm">
+        <table class="table table-hover table-sm" style="margin-top:10px;">
             <tr>
                 {{-- <th width = "50px"><b>No.</b></th> --}}
                 <th width = "100px">First Name</a></th>
@@ -36,8 +36,8 @@
                         <form action="{{ route('contacts.destroy', $value->id) }}" method="post">
                             <a class="btn btn-sm btn-success" href="{{ route('contacts.show', $value->id)}}">Show</a>
                             <a class="btn btn-sm btn-warning" href="{{ route('contacts.edit', $value->id)}}">Edit</a>
-                            {{-- <a class="btn btn-sm btn-second" href="{{ route('addresses.create', $value->id)}}">Add Address</a> --}}
-                            {{-- @crsf --}}
+                            <a class="btn btn-sm btn-second" href="{{ route('contacts.createAddress', ['contact_id' => $value->id])}}">Add Address</a>
+                            @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                         </form>

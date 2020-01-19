@@ -43,5 +43,12 @@
             {{ $address->zip}}
         </div>
     </div>
+    <div>
+        <form action="{{ route('addresses.destroy', $value2->id) }}" method="post">
+        <a class="btn btn-sm btn-warning" href="{{ route('addresses.edit', $value2->id)}}">Edit</a>
+        @method('DELETE')
+            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+        </form>
+    </div>
 </div>
 @endsection

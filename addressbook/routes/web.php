@@ -12,18 +12,23 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('contacts');
 });
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
 
 // Blade Routes
-// Route::get('blade', function () {
-//     return view('child');
-Route::get('/search', 'ContactController@getSearch')->name('contacts.search');
-// Route::get('/map', 'MapController@index')->name('map');
+Route::get('/search', 'ContactController@search')->name('contacts.search');
+Route::get('/createAddress', 'ContactController@createAddress')->name('contacts.createAddress');
+Route::post('/storeAddress/{contact_id}', 'AddressController@store')->name('addresses.store');
+// Route::get('/show', 'ContactController@show')->name('contacts.show');
+Route::get('/edit', 'ContactController@edit')->name('contacts.edit');
+
+// get id for address function
+// Route::get('createAddress/{id}', ['as'=>'id','uses'=>'AddressController@store'])->name('contacts.createAddress');
+// Route::get('/map', 'ContactController@map')->name('map');
 
 // MySQL data routes
 Route::resource('contacts', 'ContactController');

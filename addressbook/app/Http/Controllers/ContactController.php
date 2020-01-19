@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Contact;
+use App\Address;
 
 class ContactController extends Controller
 {
@@ -15,9 +16,8 @@ class ContactController extends Controller
     public function index()
     {
         $contacts = Contact::all();//->paginate(5);
-        // $addresses = Address::all();
         return view('contacts.index', ['contacts' => $contacts]);
-               // ->with("i", (request()->input('page',1) -1) *5);
+              // ->with("i", (request()->input('page',1) -1) *5);
     }
 
     /**
@@ -38,15 +38,25 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
+        //dump(create($request->toArray()));
+        
+        $request->validate
+        ([
             'firstName'=>'required|string|max:255',
-            'laststName'=>'required|string|max:255',
-            'email'=>'required|string|max:255',
-            'phone'=>'string|max:255',
-            'birthday'=>'string|max:255',
+            'lastName'=>'required|string|max:255',
+            'email'=>'required|unique:contacts|string|max:255',
+            'phone'=>'nullable|string|max:255',
+            'birthday'=>'nullable|string|max:255',
           ]);
-          Contacts::create($request->all());
-          return redirect()->route('contacts.index')->with('success','Contact created success');
+        //   dump($request->toArray());
+          $data = Contact::create($request->all());
+        //   dump($data->toArray());
+        $contact_id = $data->id;
+       
+        dump($data->id);
+        dump($contact_id);
+          return view('contacts.createAddress')->with('contact_id', $contact_id);
+          //response()->json(array('success' => true, 'last_insert_id' => $data->id), 200);
       }
 
     /**
@@ -61,7 +71,6 @@ class ContactController extends Controller
         // dump($contact->addresses()->count());
             return view('contacts.details')
                     ->with('contact', $contact);
-            // return $this->hasMany('App\Address' , $id);
     }
 
     /**
@@ -72,7 +81,7 @@ class ContactController extends Controller
      */
     public function edit($id)
     {
-        $contact = Contacts::find($id);
+        $contact = Contact::find($id);
         return view('contacts.edit',compact('contact'));
     }
 
@@ -84,16 +93,16 @@ class ContactController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $this->validate($request,[
+    {   // validation failing need to come back to fix this
+        $request->validate([
             'firstName'=>'required|string|max:255',
-            'laststName'=>'required|string|max:255',
+            'lastName'=>'required|string|max:255',
             'email'=>'required|string|max:255',
-            'phone'=>'string|max:255',
-            'birthday'=>'string|max:255',
+            'phone'=>'nullable|string|max:255',
+            'birthday'=>'nullable|string|max:255',
           ]);
-          Contacts::find($id)->update($request->all());
-          return redirect()->route('contacts.index')->with('success','Contact update success');
+        Contact::find($id)->update($request->all());
+        return redirect()->route('contacts.index')->with('success','Contact update success');
     }
 
     /**
@@ -104,11 +113,11 @@ class ContactController extends Controller
      */
     public function destroy($id)
     {
-        Contacts::find($id)->delete();
+        Contact::find($id)->delete();
         return redirect()->route('contacts.index')->with('success','Contact deleted success');   
     }
 
-    public function getSearch(Request $request) 
+    public function search(Request $request) 
     {
         return view('search.index');   
     }
@@ -135,9 +144,21 @@ class ContactController extends Controller
             ->orWhere('phone', $query)
             ->orWhere('email', $query)
             ->get();
+
+        return view('search.results')
+            ->with('contact', $results);
         // SELECT * FROM ', contacts'. WHERE ', firstName,' LIKE\$query';'
         // , fucntionfirstName || lastName || phone || email 
     }
+
+public function createAddress (Request $request)
+{
+    // dump($request->toArray());
+    // dump($request->contact_id);
+    $contact_id = $request->contact_id;
+    return view('contacts.createAddress')->with('contact_id', $contact_id);
+}
+
     // public function sort($value)
     // {
     //     $contacts = Contact::all();
