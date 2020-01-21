@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Contact;
 use App\Address;
 
@@ -49,7 +50,7 @@ class ContactController extends Controller
             'birthday'=>'nullable|string|max:255',
           ]);
         //   dump($request->toArray());
-          $data = Contact::create($request->all());
+        $data = Contact::create($request->all());
         //   dump($data->toArray());
         $contact_id = $data->id;
        
@@ -117,47 +118,33 @@ class ContactController extends Controller
         return redirect()->route('contacts.index')->with('success','Contact deleted success');   
     }
 
-    public function search(Request $request) 
+    public function search() 
     {
-        return view('search.index');   
+        return view('contacts.search');   
     }
 
     public function postSearch(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'query' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect('post/create')
-                        ->withErrors($validator)
-                        ->withInput();
-        }
-        else
-        {
-            $query = $request->input('query');
-        }
-
-        $results = Contact::table('contacts')
-            ->where('firstName', $query)
-            ->orWhere('lastName', $query)
-            ->orWhere('phone', $query)
-            ->orWhere('email', $query)
+        // dump($request->toArray());
+        $query = $request->get('search');
+        // dump($query);
+        $contacts = DB::table('contacts')
+            ->where('firstName', 'like', '%' . $query . '%')
+            ->orWhere('lastName', 'like', '%' . $query . '%')
+            ->orWhere('phone', 'like', '%' . $query . '%')
+            ->orWhere('email', 'like', '%' . $query . '%')
             ->get();
-
-        return view('search.results')
-            ->with('contact', $results);
-        // SELECT * FROM ', contacts'. WHERE ', firstName,' LIKE\$query';'
-        // , fucntionfirstName || lastName || phone || email 
+        // dump($contacts);
+        return view('contacts.postSearch', ['contacts' => $contacts]);
     }
 
-public function createAddress (Request $request)
-{
-    // dump($request->toArray());
-    // dump($request->contact_id);
-    $contact_id = $request->contact_id;
-    return view('contacts.createAddress')->with('contact_id', $contact_id);
-}
+    public function createAddress (Request $request)
+    {
+        // dump($request->toArray());
+        // dump($request->contact_id);
+        $contact_id = $request->contact_id;
+        return view('contacts.createAddress')->with('contact_id', $contact_id);
+    }
 
     // public function sort($value)
     // {
