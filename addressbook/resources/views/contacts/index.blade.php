@@ -15,11 +15,11 @@
     <div class="table-responsive">
     <table class="table table-hover">
         <tr class="row" style="text-align:center">
-            <th class="col-sm-1"><button type="submit" class="btn" href="{{ route('contacts.sort', ['column' => 'firstName'] )}}">First Name</button></th>
-            <th class="col-sm-2"><button type="submit" class="btn" href="{{ route('contacts.sort', ['column' => 'lastName'] )}}">Last Name</button></th>
-            <th class="col-sm-2"><button type="submit" class="btn" href="{{ route('contacts.sort', ['column' => 'email'] )}}">Email</button></th>
-            <th class="col-sm-1"><button type="submit" class="btn" href="{{ route('contacts.sort', ['column' => 'phone'] )}}">Phone</button></th>
-            <th class="col-sm-1"><button type="submit" class="btn" href="{{ route('contacts.sort', ['column' => 'birthday'] )}}">Birthday</button></th>
+            <th class="col-sm-1"><a type="submit" class="btn" href="{{ route('contacts.sort', ['column' => 'firstName'] )}}">First Name</a></th>
+            <th class="col-sm-2"><a type="submit" class="btn" href="{{ route('contacts.sort', ['column' => 'lastName'] )}}">Last Name</a></th>
+            <th class="col-sm-2"><a type="submit" class="btn" href="{{ route('contacts.sort', ['column' => 'email'] )}}">Email</a></th>
+            <th class="col-sm-1"><a type="submit" class="btn" href="{{ route('contacts.sort', ['column' => 'phone'] )}}">Phone</a></th>
+            <th class="col-sm-1"><a type="submit" class="btn" href="{{ route('contacts.sort', ['column' => 'birthday'] )}}">Birthday</a></th>
             <th class="col-sm-4">Action</th>
         </tr>
         <tbody>
