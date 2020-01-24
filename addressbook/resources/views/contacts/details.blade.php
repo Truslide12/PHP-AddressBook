@@ -1,13 +1,9 @@
 @extends('layouts.master')
 @section('content')
+<div class="container">
 <div class="row" style="margin-top:20px">
     <div class="col-lg-12 margin-tb">
-        <div class="pull-left">
-            <h2>Show Contact</h2>
-        </div>
-        <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('contacts.index') }}">Contacts</a>
-        </div>
+            <h2>Contact Info</h2>
     </div>
 </div>
 <div class="row">
@@ -39,25 +35,27 @@
     </div>
     </div>
     <table class="table table-hover">
-        <tr>
-            <th>Type</th>
-            <th>Number</th>
-            <th>Street</th>
-            <th>City</th>
-            <th>State</th>
-            <th>Zip</th>
+        <tr class="row">
+            <th class="col-sm-1">Type</th>
+            <th class="col-sm-1">Number</th>
+            <th class="col-sm-3">Street</th>
+            <th class="col-sm-2">City</th>
+            <th class="col-sm-1">State</th>
+            <th class="col-sm-1">Zip</th>
+            <th class="col-sm-3">Action</th>
         </tr>
         @foreach($contact->addresses as $row)
-        <tr>
-            <td>{{ $row->type}}</td>
-            <td>{{ $row->number}}</td>
-            <td>{{ $row->street}}</td>
-            <td>{{ $row->city}}</td>
-            <td>{{ $row->state}}</td>
-            <td>{{ $row->zip}}</td>
-            <td><a class="btn btn-sm btn-warning" href="{{ route('addresses.edit', $row->id)}}">Edit</a></td>
-            <td>
+        <tr class="row">
+            <td class="col-sm-1">{{ $row->type}}</td>
+            <td class="col-sm-1">{{ $row->number}}</td>
+            <td class="col-sm-3">{{ $row->street}}</td>
+            <td class="col-sm-2">{{ $row->city}}</td>
+            <td class="col-sm-1">{{ $row->state}}</td>
+            <td class="col-sm-1">{{ $row->zip}}</td>
+            <td class="col-sm-3">
                 <form action="{{ route('addresses.destroy', $row->id) }}" method="post">
+                <a class="btn btn-sm btn-warning" href="{{ route('addresses.edit', $row->id)}}">Edit</a>
+            {{-- <td><a class="btn btn-sm btn-warning" href="{{ route('contacts.map', $row->id)}}">Edit</a></td> --}}
                     @csrf
                 @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-danger">Delete</button>
@@ -66,5 +64,6 @@
         </tr>
         @endforeach
     </table>
+</div>
 </div>
     @endsection
