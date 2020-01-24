@@ -1,11 +1,12 @@
 @extends('layouts.master')
 @section('content')
-<div class="row">
-    <div class="col-lg-12 margin-tb">
+<div class="container">
+    <div class="col-lg-12">
             <h2>Search Results</h2>
     </div>
 </div>
 @if(isset($contacts))
+<div class="container">
 <table class="table table-hover table-sm" style="margin-top:10px;">
     <tr>
         <th width = "100px">First Name</a></th>

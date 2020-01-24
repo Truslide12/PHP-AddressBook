@@ -27,6 +27,7 @@ Route::get('/search', 'ContactController@search')->name('contacts.search');
 Route::get('/postSearch', 'ContactController@postSearch')->name('contacts.postSearch');
 Route::get('/sort/{column}', 'ContactController@sort')->name('contacts.sort');
 Route::get('/sortDesc/{column}', 'ContactController@sortDesc')->name('contacts.sortDesc');
+Route::get('/details/{column}', 'addressController@details')->name('addresses.details');
 
 // MySQL data routes
 Route::resource('contacts', 'ContactController');
