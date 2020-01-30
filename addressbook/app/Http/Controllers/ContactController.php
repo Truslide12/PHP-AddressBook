@@ -148,9 +148,9 @@ class ContactController extends Controller
 
     public function sort($column, $currentCol , $sort_order)
     {
-        dump($column);
-        dump($currentCol);
-        dump($sort_order);
+        // dump($column);
+        // dump($currentCol);
+        // dump($sort_order);
         // get current order and column
         if ($column === $currentCol){
             $contacts = DB::table('contacts')->orderBy($column, 'desc')->simplePaginate(10);
