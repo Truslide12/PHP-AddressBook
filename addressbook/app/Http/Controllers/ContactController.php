@@ -146,17 +146,26 @@ class ContactController extends Controller
         return view('contacts.createAddress')->with('contact_id', $contact_id);
     }
 
-    public function sort($column)
+    public function sort($column, $currentCol , $sort_order)
     {
-        // dump($column);
-        $contacts = DB::table('contacts')->orderBy($column)->simplePaginate(10);
-        return view('contacts.sort', ['contacts' => $contacts]);
-    }
+        dump($column);
+        dump($currentCol);
+        dump($sort_order);
+        // get current order and column
+        if ($column === $currentCol){
+            $contacts = DB::table('contacts')->orderBy($column, 'desc')->simplePaginate(10);
+            $sort_order = 'desc';
+            $currentCol = $column;
+        }
+        
+        else {
+        $contacts = DB::table('contacts')->orderBy($column, 'asc')->simplePaginate(10);
+            $sort_order = 'asc';
+            $currentCol = $column;
+        }
 
-    public function sortDesc($column)
-    {
-        // dump($column);
-        $contacts = DB::table('contacts')->sortDesc($column)->simplePaginate(10);
-        return view('contacts.sort', ['contacts' => $contacts]);
+        // determine if order should be asc or desc
+        // sort by asc or desc accordingly
+        return view('contacts.sort', ['contacts' => $contacts, 'currentCol' => $column, 'sort_order' => $sort_order]);
     }
 }
