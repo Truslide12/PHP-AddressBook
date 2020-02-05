@@ -20,9 +20,6 @@ Route::get('/', function () {
 // Auth::routes();
 
 // Blade Routes
-Route::get('/edit', 'ContactController@edit')->name('contacts.edit');
-Route::get('/createAddress', 'ContactController@createAddress')->name('contacts.createAddress');
-Route::post('/storeAddress/{contact_id}', 'AddressController@store')->name('addresses.store');
 Route::get('/search', 'ContactController@search')->name('contacts.search');
 Route::get('/postSearch', 'ContactController@postSearch')->name('contacts.postSearch');
 Route::get('/sort/{column}/{currentCol}/{sort_order}', 'ContactController@sort')->name('contacts.sort');
@@ -30,5 +27,8 @@ Route::get('/sortDesc/{column}', 'ContactController@sortDesc')->name('contacts.s
 Route::get('/details/{column}', 'addressController@details')->name('addresses.details');
 
 // MySQL data routes
+Route::get('/edit', 'ContactController@edit')->name('contacts.edit');
+Route::get('/createAddress', 'ContactController@createAddress')->name('contacts.createAddress');
+Route::post('/storeAddress/{contact_id}', 'AddressController@store')->name('addresses.store');
 Route::resource('contacts', 'ContactController');
 Route::resource('addresses', 'AddressController');
